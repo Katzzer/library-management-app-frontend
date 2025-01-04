@@ -1,0 +1,43 @@
+:root {
+  --background: linear-gradient(135deg, #ff3333, #2575fc);;
+  --foreground: #171717;
+}
+
+/*@media (prefers-color-scheme: dark) {*/
+/*  :root {*/
+/*    --background: #0a0a0a;*/
+/*    --foreground: #ededed;*/
+/*  }*/
+/*}*/
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+  font-family: Arial, Helvetica, sans-serif;
+  min-height: 100vh;
+  user-select: none;
+}
+
+a {
+  text-decoration: none !important;
+}
+
+.app-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app-content {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.custom-hover-link {
+  color: white;
+  text-decoration: none;
+}
+
+.custom-hover-link:hover {
+  color: black;
+}
