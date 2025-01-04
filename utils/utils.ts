@@ -1,6 +1,10 @@
 import jwt from "jsonwebtoken";
 
-export const isTokenValid = (token: string): boolean => {
+export const isTokenValid = (token: string | null): boolean => {
+    if (!token) {
+        return false;
+    }
+
     try {
         const decoded = jwt.decode(token) as { exp: number } | null;
 
@@ -10,7 +14,7 @@ export const isTokenValid = (token: string): boolean => {
         }
 
         const currentTime = Math.floor(Date.now() / 1000); // Current time in seconds
-        return decoded.exp > currentTime; // Check if token's expiration time is greater than current time
+        return decoded.exp > currentTime;
     } catch (error) {
         console.error("Error decoding token:", error);
         return false;

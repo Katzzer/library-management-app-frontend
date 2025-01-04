@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+import {isTokenValid} from "@/utils/utils";
+import {router} from "next/client";
+import Link from "next/link";
 
 interface Book {
     id: number;
@@ -16,6 +19,18 @@ interface Book {
 const AllBooks: React.FC = () => {
     const token = useSelector((state: RootState) => state.auth.token);
     const [books, setBooks] = useState<Book[]>([]);
+    const [isAuthenticated, setIsAuthenticated] = useState(true);
+
+    useEffect(() => {
+        setIsAuthenticated(isTokenValid(token));
+    }, [token]);
+
+    useEffect(() => {
+        console.log("isAuthenticated:", isAuthenticated);
+        if (!isAuthenticated) {
+            router.push("/");
+        }
+    }, [isAuthenticated]);
 
     useEffect(() => {
         const fetchBooks = async () => {
@@ -34,7 +49,14 @@ const AllBooks: React.FC = () => {
 
     return (
         <div className="container mt-4">
-            <h1 className="text-center mb-4">Books</h1>
+
+            <Link href="/">
+                <button className="btn btn-primary btn-lg px-4">
+                    Back to Home
+                </button>
+            </Link>
+
+            <h1 className="text-center mb-4">List Of Books</h1>
             <table className="table table-striped table-bordered">
                 <thead className="thead-dark">
                 <tr>

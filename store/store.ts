@@ -1,20 +1,18 @@
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./authSlice";
 import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage"; // By default, this uses localStorage to persist data
+import sessionStorage from "redux-persist/lib/storage/session"; // Use sessionStorage
 
-// Redux Persist Configuration for the auth slice
 const persistConfig = {
     key: "auth", // Key to save the persisted state
-    storage, // Use localStorage or sessionStorage
+    storage: sessionStorage, // Use sessionStorage instead of the default localStorage
 };
 
-// Wrap the auth reducer with persistReducer
 const persistedAuthReducer = persistReducer(persistConfig, authReducer);
 
 const store = configureStore({
     reducer: {
-        auth: persistedAuthReducer, // Set the persisted reducer
+        auth: persistedAuthReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

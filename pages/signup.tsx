@@ -1,17 +1,31 @@
 import { useDispatch, useSelector } from "react-redux";
 import { setToken } from "@/store/authSlice";
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
-import { RootState } from "@/store/store"; // Import RootState from the store
+import { RootState } from "@/store/store";
+import {isTokenValid} from "@/utils/utils";
+import { useRouter } from "next/router";
 
 const SignUp: React.FC = () => {
     const [email, setEmail] = useState("admin@gmail.com");
     const [password, setPassword] = useState("admin");
     const [showModal, setShowModal] = useState(false);
     const [isSigningUp, setIsSigningUp] = useState(true);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const router = useRouter();
 
     const dispatch = useDispatch();
     const token = useSelector((state: RootState) => state.auth.token);
+
+    useEffect(() => {
+        setIsAuthenticated(isTokenValid(token));
+    }, [token]);
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            router.push("/all-books");
+        }
+    }, [isAuthenticated]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -29,7 +43,7 @@ const SignUp: React.FC = () => {
             console.error("Error during request:", error);
 
             if (axios.isAxiosError(error) && error.response?.status === 409) {
-                setShowModal(true); // Open the modal for errors
+                setShowModal(true);
             }
         }
     };
@@ -86,16 +100,6 @@ const SignUp: React.FC = () => {
                     </button>
                 </div>
             </div>
-
-            <div style={{
-                wordWrap: 'break-word',
-                whiteSpace: 'normal',
-                overflowWrap: 'break-word',
-                maxWidth: '100%',
-                overflow: 'hidden'
-            }}>
-                {token}
-            </div>l
 
             {/* Modal for Error Message */}
             {showModal && (

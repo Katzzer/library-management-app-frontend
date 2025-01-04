@@ -11,11 +11,7 @@ const Home: React.FC = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(() => {
-        if (token) {
             setIsAuthenticated(isTokenValid(token));
-        } else {
-            setIsAuthenticated(false);
-        }
     }, [token]);
 
 
