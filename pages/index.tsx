@@ -1,10 +1,8 @@
 "use client";
 import React from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 const Home: React.FC = () => {
-    const router = useRouter();
 
     return (
         <div
@@ -22,7 +20,7 @@ const Home: React.FC = () => {
             <p>Your one-stop solution for managing all your library needs!</p>
             <div style={{ marginTop: "20px" }}>
                 <Link
-                    href={"/register"}
+                    href={"/signup/register.tsx"}
                     style={{
                         marginRight: "10px",
                         padding: "10px 20px",
