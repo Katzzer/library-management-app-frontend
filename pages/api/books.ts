@@ -1,6 +1,5 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import axios from 'axios';
-import {UserData} from "@/data/types";
+import {NextApiRequest, NextApiResponse} from "next";
+import axios from "axios";
 
 const API_ENDPOINT = process.env.API_ENDPOINT || "http://localhost:8080"
 
@@ -14,22 +13,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 }
 
 async function handlePostRequest(req: NextApiRequest, res: NextApiResponse) {
-    const { email, password, isSigningUp } = req.body;
+    const { token } = req.body;
 
-    if (!email || !password) {
-        return res.status(400).json({ error: 'Invalid input. Missing name or password.' });
-    }
-
-    console.log("Request received for:", { name: email, password });
-
-    const userData: UserData = {
-        email,
-        password,
-        isSigningUp
+    if (!token) {
+        return res.status(400).json({ error: 'Invalid input. Missing token.' });
     }
 
     try {
-        const response = await sendUserDataToAPI(userData);
+        const response = await getAlLBooks(token);
         res.status(200).json({ message: "Data sent successfully!", response: response.data });
     } catch (error) {
         console.log(error)
@@ -37,16 +28,14 @@ async function handlePostRequest(req: NextApiRequest, res: NextApiResponse) {
     }
 }
 
-async function sendUserDataToAPI(userData: UserData) {
-    console.log("Sending user data:", userData);
+async function getAlLBooks(token: string) {
 
-    const signUpOrLogin = userData.isSigningUp ? "signup" : "login";
+    const url = `${API_ENDPOINT}/api/v1/books/`;
 
-    const url = `${API_ENDPOINT}/api/v1/registration/${signUpOrLogin}`;
-
-    return axios.post(url, userData, {
+    return axios.get(url, {
         headers: {
             'Content-Type': 'application/json',
+            'Authorization': token
         },
     });
 }

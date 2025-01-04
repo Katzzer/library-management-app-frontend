@@ -1,13 +1,17 @@
-"use client";
+import { useDispatch, useSelector } from "react-redux";
+import { setToken } from "@/store/authSlice";
 import React, { useState } from "react";
 import axios from "axios";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { RootState } from "@/store/store"; // Import RootState from the store
 
 const SignUp: React.FC = () => {
     const [email, setEmail] = useState("admin@gmail.com");
     const [password, setPassword] = useState("admin");
     const [showModal, setShowModal] = useState(false);
-    const [isSigningUp, setIsSigningUp] = useState(true); // true: Sign Up, false: Login
+    const [isSigningUp, setIsSigningUp] = useState(true);
+
+    const dispatch = useDispatch();
+    const token = useSelector((state: RootState) => state.auth.token);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -16,18 +20,21 @@ const SignUp: React.FC = () => {
             const response = await axios.post("api/signup", { email, password, isSigningUp });
 
             console.log("Response from server:", response.data);
+
+            if (response.data.response.token) {
+                dispatch(setToken(response.data.response.token));
+                console.log("Token saved to Redux:", response.data.response.token);
+            }
         } catch (error) {
             console.error("Error during request:", error);
 
             if (axios.isAxiosError(error) && error.response?.status === 409) {
-                setShowModal(true); // Open the modal
+                setShowModal(true); // Open the modal for errors
             }
         }
     };
 
-    const toggleSignMode = () => {
-        setIsSigningUp((prev) => !prev); // Toggle between Sign Up and Login
-    };
+    const toggleSignMode = () => setIsSigningUp((prev) => !prev);
 
     return (
         <div className="container d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
@@ -80,6 +87,16 @@ const SignUp: React.FC = () => {
                 </div>
             </div>
 
+            <div style={{
+                wordWrap: 'break-word',
+                whiteSpace: 'normal',
+                overflowWrap: 'break-word',
+                maxWidth: '100%',
+                overflow: 'hidden'
+            }}>
+                {token}
+            </div>l
+
             {/* Modal for Error Message */}
             {showModal && (
                 <div
@@ -88,7 +105,6 @@ const SignUp: React.FC = () => {
                         display: "block",
                         backgroundColor: "rgba(0,0,0,0.5)",
                     }}
-                    onClick={() => setShowModal(false)} // Close modal on click outside
                 >
                     <div className="modal-dialog modal-dialog-centered">
                         <div className="modal-content">
@@ -101,16 +117,7 @@ const SignUp: React.FC = () => {
                                 ></button>
                             </div>
                             <div className="modal-body">
-                                <p>{isSigningUp ? "User is already registered" : "Login failed"}</p>
-                            </div>
-                            <div className="modal-footer">
-                                <button
-                                    type="button"
-                                    className="btn btn-secondary"
-                                    onClick={() => setShowModal(false)}
-                                >
-                                    Close
-                                </button>
+                                <p>Email already exists. Please try again.</p>
                             </div>
                         </div>
                     </div>
