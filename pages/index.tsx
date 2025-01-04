@@ -1,39 +1,46 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import { isTokenValid } from "@/utils/utils";
+import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap styles
 
 const Home: React.FC = () => {
+    const token = useSelector((state: RootState) => state.auth.token);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+    useEffect(() => {
+        if (token) {
+            setIsAuthenticated(isTokenValid(token));
+        } else {
+            setIsAuthenticated(false);
+        }
+    }, [token]);
+
+
+    const buttonText = isAuthenticated ? "Explore Books" : "Login";
+    const buttonUrl = isAuthenticated ? "/all-books" : "/signup";
 
     return (
-        <div
-            style={{
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "center",
-                alignItems: "center",
-                height: "100vh", // Full viewport height
-                fontFamily: "Arial, sans-serif",
-                textAlign: "center",
-            }}
-        >
-            <h1>Welcome to the Library Management App</h1>
-            <p>Your one-stop solution for managing all your library needs!</p>
-            <div style={{ marginTop: "20px" }}>
-                <Link
-                    href={"/signup"}
-                    style={{
-                        marginRight: "10px",
-                        padding: "10px 20px",
-                        fontSize: "16px",
-                        backgroundColor: "#007BFF",
-                        color: "#fff",
-                        border: "none",
-                        borderRadius: "5px",
-                        cursor: "pointer",
-                    }}
-                >
-                    Register
-                </Link>
+        <div className="container-fluid d-flex justify-content-center align-items-center vh-100 ">
+            <div className="card shadow-lg p-4 bg-light" style={{ maxWidth: "600px" }}>
+                <div className="card-body text-center">
+                    <h1 className="card-title">Welcome to Future Library</h1>
+                    <h4 className="text-muted mb-4">Your gateway to unlimited knowledge</h4>
+                    <p className="card-text">
+                        Discover a wide collection of books, manage your reading habits,
+                        and stay ahead in the journey of endless learning. Visit our library and check out your favorite titles today!
+                    </p>
+                    <hr />
+                    <div className="mt-4">
+                        <Link href={buttonUrl}>
+                            <button className="btn btn-primary btn-lg px-4">
+                                {buttonText}
+                            </button>
+                        </Link>
+                    </div>
+                </div>
             </div>
         </div>
     );
