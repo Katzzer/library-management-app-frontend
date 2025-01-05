@@ -13,14 +13,14 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
 }
 
 async function handlePostRequest(req: NextApiRequest, res: NextApiResponse) {
-    const { token } = req.body;
+    const { token, id, action } = req.body;
 
     if (!token) {
         return res.status(400).json({ error: 'Invalid input. Missing token.' });
     }
 
     try {
-        const response = await getAlLBooks(token);
+        const response = await getBooks(token, id, action);
         res.status(200).json({ message: "Data sent successfully!", response: response.data });
     } catch (error) {
         console.log(error)
@@ -28,9 +28,24 @@ async function handlePostRequest(req: NextApiRequest, res: NextApiResponse) {
     }
 }
 
-async function getAlLBooks(token: string) {
+async function getBooks(token: string, id?: string, action?: string) {
 
-    const url = `${API_ENDPOINT}/api/v1/books/`;
+    let urlPart = '/api/v1/books/';
+    if (id) {
+        urlPart += id;
+    }
+
+    const url = `${API_ENDPOINT}${urlPart}`;
+
+    if (id && action) {
+        const result = await axios.post(`${url}/${action}`, {}, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': token
+            },
+        });
+        console.log(result);
+    }
 
     return axios.get(url, {
         headers: {

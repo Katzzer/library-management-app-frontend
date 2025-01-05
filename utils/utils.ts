@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import {DecodedToken} from "@/data/types";
 
 export const isTokenValid = (token: string | null): boolean => {
     if (!token) {
@@ -18,5 +19,27 @@ export const isTokenValid = (token: string | null): boolean => {
     } catch (error) {
         console.error("Error decoding token:", error);
         return false;
+    }
+};
+
+export const decodeToken = (token: string | null): DecodedToken | null => {
+    if (!token) {
+        console.error("Token is undefined or null.");
+        return null;
+    }
+
+    try {
+        const decoded = jwt.decode(token) as DecodedToken | null;
+
+        if (!decoded) {
+            console.error("Failed to decode token. Invalid token.");
+            return null;
+        } else {
+            console.log("Decoded Token Information:", decoded);
+            return decoded;
+        }
+    } catch (error) {
+        console.error("Error decoding token:", error);
+        return null; // Handle potential exceptions by returning `null`
     }
 };
