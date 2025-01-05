@@ -2,14 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-import { isTokenValid } from "@/utils/utils";
+import {getBackendUrl, isTokenValid} from "@/utils/utils";
 import { useRouter } from "next/router";
 import { Book } from "@/data/types";
 import Image from "next/image";
 import { clearToken } from "@/store/authSlice";
 import "@/styles/book.scss"
-
-const API_ENDPOINT = process.env.API_ENDPOINT || "http://localhost:8080";
 
 const AllBooks: React.FC = () => {
     const dispatch = useDispatch();
@@ -121,7 +119,7 @@ const AllBooks: React.FC = () => {
                             <div className="d-flex align-items-center">
                                 <div style={{width: "120px"}} className="image-container">
                                     <Image
-                                        src={`${API_ENDPOINT}/static/images/${book.image_name}`}
+                                        src={`${getBackendUrl()}/static/images/${book.image_name}`}
                                         width={100}
                                         height={100}
                                         alt={book.name}

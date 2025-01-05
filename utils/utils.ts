@@ -42,3 +42,7 @@ export const decodeToken = (token: string | null): DecodedToken | null => {
         return null; // Handle potential exceptions by returning `null`
     }
 };
+
+export const getBackendUrl = ():string => {
+    return process.env.API_ENDPOINT || "http://localhost:8080";
+}

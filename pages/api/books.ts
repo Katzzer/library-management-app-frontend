@@ -1,7 +1,6 @@
 import {NextApiRequest, NextApiResponse} from "next";
 import axios from "axios";
-
-const API_ENDPOINT = process.env.API_ENDPOINT || "http://localhost:8080"
+import {getBackendUrl} from "@/utils/utils";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 
@@ -35,7 +34,7 @@ async function getBooks(token: string, id?: string, action?: string) {
         urlPart += id;
     }
 
-    const url = `${API_ENDPOINT}${urlPart}`;
+    const url = `${getBackendUrl()}${urlPart}`;
 
     if (id && action) {
         const result = await axios.post(`${url}/${action}`, {}, {

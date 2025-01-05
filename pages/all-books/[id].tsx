@@ -3,14 +3,12 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import {useDispatch, useSelector} from "react-redux";
 import { RootState } from "@/store/store";
-import { decodeToken, isTokenValid } from "@/utils/utils";
+import {decodeToken, getBackendUrl, isTokenValid} from "@/utils/utils";
 import { Book, DecodedToken } from "@/data/types";
 import { BorrowOrReturn } from "@/data/enum";
 import Image from "next/image";
 import {clearToken} from "@/store/authSlice";
 import "@/styles/allBooks.scss"
-
-const API_ENDPOINT = process.env.API_ENDPOINT || "http://localhost:8080";
 
 const BookDetails: React.FC = () => {
     const dispatch = useDispatch();
@@ -82,7 +80,7 @@ const BookDetails: React.FC = () => {
                     {/* Image on the left */}
                     <div className="me-4 image-container">
                         <Image
-                            src={`${API_ENDPOINT}/static/images/${book.image_name}`}
+                            src={`${getBackendUrl()}/static/images/${book.image_name}`}
                             width={200}
                             height={300}
                             alt={book.name}

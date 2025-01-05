@@ -1,8 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import axios from 'axios';
 import {UserData} from "@/data/types";
-
-const API_ENDPOINT = process.env.API_ENDPOINT || "http://localhost:8080"
+import {getBackendUrl} from "@/utils/utils";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 
@@ -42,7 +41,7 @@ async function sendUserDataToAPI(userData: UserData) {
 
     const signUpOrLogin = userData.isSigningUp ? "signup" : "login";
 
-    const url = `${API_ENDPOINT}/api/v1/registration/${signUpOrLogin}`;
+    const url = `${getBackendUrl()}/api/v1/registration/${signUpOrLogin}`;
 
     return axios.post(url, userData, {
         headers: {
