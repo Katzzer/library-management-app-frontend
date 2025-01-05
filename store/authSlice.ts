@@ -18,7 +18,8 @@ const authSlice = createSlice({
             state.token = action.payload; // Set the token
         },
         clearToken: (state) => {
-            state.token = null; // Clear the token
+            state.token = null;
+            // sessionStorage.removeItem('token');
         },
     },
 });

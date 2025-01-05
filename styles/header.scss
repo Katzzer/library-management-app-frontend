@@ -1,0 +1,19 @@
+header {
+  padding: 1rem 3rem 1rem 3rem;
+  background: pink;
+  z-index: 999;
+  flex-shrink: 0;
+
+  @media screen and (max-width: 500px) {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  #application-name {
+    @media screen and (max-width: 380px) {
+      font-size: 1.2rem !important;
+    }
+  }
+
+}
+

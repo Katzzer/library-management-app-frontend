@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import {isTokenValid} from "@/utils/utils";
 import {router} from "next/client";
-import Link from "next/link";
 
 interface Book {
     id: number;
@@ -37,7 +36,7 @@ const AllBooks: React.FC = () => {
             if (token) {
                 try {
                     const response = await axios.post('/api/books', { token });
-                    setBooks(response.data.response); // Assuming response structure matches
+                    setBooks(response.data.response);
                 } catch (error) {
                     console.error("Error fetching books:", error);
                 }
@@ -49,12 +48,6 @@ const AllBooks: React.FC = () => {
 
     return (
         <div className="container mt-4">
-
-            <Link href="/">
-                <button className="btn btn-primary btn-lg px-4">
-                    Back to Home
-                </button>
-            </Link>
 
             <h1 className="text-center mb-4">List Of Books</h1>
             <table className="table table-striped table-bordered">

@@ -6,21 +6,26 @@ import { Provider } from 'react-redux';
 import store, { persistor } from '@/store/store';
 import { PersistGate } from 'redux-persist/integration/react';
 import Head from "next/head";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 export default function App({ Component, pageProps }: AppProps) {
     return (
         <>
             <Head>
-                <title>My App</title>
+                <title>Future Library</title>
             </Head>
 
             <Provider store={store}>
-                {/* Wrap the app with PersistGate */}
                 <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
                     <div className="app-wrapper">
+                        <Header />
+
                         <main className="app-content">
                             <Component {...pageProps} />
                         </main>
+
+                        <Footer />
                     </div>
                 </PersistGate>
             </Provider>
