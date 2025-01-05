@@ -4,7 +4,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { isTokenValid } from "@/utils/utils";
 import { useRouter } from "next/router";
-import {Book} from "@/data/types";
+import { Book } from "@/data/types";
+import Image from "next/image";
+
+const API_ENDPOINT = process.env.API_ENDPOINT || "http://localhost:8080";
 
 const AllBooks: React.FC = () => {
     const token = useSelector((state: RootState) => state.auth.token);
@@ -26,7 +29,7 @@ const AllBooks: React.FC = () => {
         const fetchBooks = async () => {
             if (token) {
                 try {
-                    const response = await axios.post('/api/books', { token });
+                    const response = await axios.post("/api/books", { token });
                     setBooks(response.data.response);
                 } catch (error) {
                     console.error("Error fetching books:", error);
@@ -47,32 +50,35 @@ const AllBooks: React.FC = () => {
             <table className="table table-striped table-bordered">
                 <thead className="thead-dark">
                 <tr>
-                    <th>ID</th>
+                    <th>Image</th>
                     <th>Name</th>
                     <th>Author</th>
                     <th>Description</th>
                     <th>ISBN</th>
                     <th>Borrowed</th>
-                    <th>Actions</th>
                 </tr>
                 </thead>
                 <tbody>
                 {books.map((book) => (
-                    <tr key={book.id}>
-                        <td>{book.id}</td>
+                    <tr
+                        key={book.id}
+                        onClick={() => handleViewBook(book.id)} // Make the row clickable
+                        style={{ cursor: "pointer" }} // Add a pointer cursor for better UX
+                    >
+                        <td>
+                            <Image
+                                src={`${API_ENDPOINT}/static/images/${book.image_name}`}
+                                width={100}
+                                height={100}
+                                alt={book.name}
+                                style={{ width: "100px", height: "auto" }}
+                            />
+                        </td>
                         <td>{book.name}</td>
                         <td>{book.author}</td>
                         <td>{book.description}</td>
                         <td>{book.isbn}</td>
                         <td>{book.borrowed ? "Yes" : "No"}</td>
-                        <td>
-                            <button
-                                className="btn btn-info"
-                                onClick={() => handleViewBook(book.id)}
-                            >
-                                View
-                            </button>
-                        </td>
                     </tr>
                 ))}
                 </tbody>

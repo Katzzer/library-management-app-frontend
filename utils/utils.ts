@@ -35,7 +35,6 @@ export const decodeToken = (token: string | null): DecodedToken | null => {
             console.error("Failed to decode token. Invalid token.");
             return null;
         } else {
-            console.log("Decoded Token Information:", decoded);
             return decoded;
         }
     } catch (error) {

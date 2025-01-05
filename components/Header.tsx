@@ -4,23 +4,15 @@ import {useDispatch, useSelector} from "react-redux";
 import { clearToken } from "@/store/authSlice"; // Import clearToken action
 import "@/styles/header.scss";
 import {isTokenValid} from "@/utils/utils";
-import {router} from "next/client";
 import {RootState} from "@/store/store";
 
 const Header = () => {
     const token = useSelector((state: RootState) => state.auth.token);
-    const [isAuthenticated, setIsAuthenticated] = useState(true);
+    const [isUSerAuthenticated, setIsUSerAuthenticated] = useState(true);
 
     useEffect(() => {
-        setIsAuthenticated(isTokenValid(token));
+        setIsUSerAuthenticated(isTokenValid(token));
     }, [token]);
-
-    useEffect(() => {
-        console.log("isAuthenticated:", isAuthenticated);
-        if (!isAuthenticated) {
-            router.push("/");
-        }
-    }, [isAuthenticated]);
 
     const dispatch = useDispatch();
 
@@ -35,7 +27,7 @@ const Header = () => {
                     Future Library
                 </Link>
             </div>
-            {isAuthenticated && <div>
+            {isUSerAuthenticated && <div>
                 <button
                     className="btn btn-outline-light"
                     onClick={handleLogout}
