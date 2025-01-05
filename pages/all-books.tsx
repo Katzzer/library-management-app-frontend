@@ -7,6 +7,7 @@ import { useRouter } from "next/router";
 import { Book } from "@/data/types";
 import Image from "next/image";
 import { clearToken } from "@/store/authSlice";
+import "@/styles/book.scss"
 
 const API_ENDPOINT = process.env.API_ENDPOINT || "http://localhost:8080";
 
@@ -73,7 +74,7 @@ const AllBooks: React.FC = () => {
             );
         }
 
-        setFilteredBooks(filtered); // Update the filtered list
+        setFilteredBooks(filtered);
     }, [searchQuery, showBorrowedOnly, books]);
 
     const title = showBorrowedOnly ? "My Borrowed Books" : "All Books";
@@ -82,12 +83,12 @@ const AllBooks: React.FC = () => {
         <div className="container mt-4">
             <h1 className="text-center mb-4">{title}</h1>
 
-            <div className="mb-4 d-flex justify-content-center align-items-center">
+            <div className="mb-4 d-flex justify-content-center align-items-center search-title-container">
                 {/* Search Bar */}
                 <input
                     type="text"
                     className="form-control"
-                    style={{ maxWidth: "400px", marginRight: "10px" }}
+                    style={{maxWidth: "400px", marginRight: "10px"}}
                     placeholder="Search by name, author, or description"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)} // Update search query
@@ -95,11 +96,13 @@ const AllBooks: React.FC = () => {
 
                 <button
                     className="btn btn-primary"
-                    onClick={() => setShowBorrowedOnly(!showBorrowedOnly)} // Toggle between borrowed and all
+                    onClick={() => setShowBorrowedOnly(!showBorrowedOnly)}
+                    style={{width: "250px"}}
                 >
                     {showBorrowedOnly ? "Show All Books" : "Show My Borrowed Books"}
                 </button>
             </div>
+
 
             <table className="table table-striped table-bordered">
                 <thead className="thead-dark">
@@ -112,11 +115,11 @@ const AllBooks: React.FC = () => {
                     <tr
                         key={book.id}
                         onClick={() => handleViewBook(book.id)}
-                        style={{ cursor: "pointer" }}
+                        style={{cursor: "pointer"}}
                     >
                         <td>
                             <div className="d-flex align-items-center">
-                                <div style={{ width: "120px" }}>
+                                <div style={{width: "120px"}} className="image-container">
                                     <Image
                                         src={`${API_ENDPOINT}/static/images/${book.image_name}`}
                                         width={100}

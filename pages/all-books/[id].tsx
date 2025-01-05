@@ -8,6 +8,7 @@ import { Book, DecodedToken } from "@/data/types";
 import { BorrowOrReturn } from "@/data/enum";
 import Image from "next/image";
 import {clearToken} from "@/store/authSlice";
+import "@/styles/allBooks.scss"
 
 const API_ENDPOINT = process.env.API_ENDPOINT || "http://localhost:8080";
 
@@ -77,9 +78,9 @@ const BookDetails: React.FC = () => {
         <div className="container mt-5">
             <h1 className="text-center mb-4">{book.name}</h1>
             <div className="card mx-auto p-4" style={{ maxWidth: "800px" }}>
-                <div className="d-flex align-items-start">
+                <div className="d-flex align-items-start image-detail-container">
                     {/* Image on the left */}
-                    <div className="me-4">
+                    <div className="me-4 image-container">
                         <Image
                             src={`${API_ENDPOINT}/static/images/${book.image_name}`}
                             width={200}
@@ -90,7 +91,7 @@ const BookDetails: React.FC = () => {
                     </div>
 
                     {/* Book details on the right */}
-                    <div>
+                    <div className="book-details">
                         <h5><strong>Author:</strong> {book.author}</h5>
                         <p><strong>Description:</strong> {book.description}</p>
                         <p><strong>ISBN:</strong> {book.isbn}</p>
@@ -104,7 +105,7 @@ const BookDetails: React.FC = () => {
                 </div>
             </div>
             <div className="d-flex justify-content-center mt-4">
-                <button className="btn btn-secondary" onClick={() => router.push("/all-books")}>
+                <button className="btn btn-secondary mb-3" onClick={() => router.push("/all-books")}>
                     Back To All Books
                 </button>
             </div>

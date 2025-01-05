@@ -1,0 +1,18 @@
+.search-title-container {
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
+
+  button {
+    @media (max-width: 600px) {
+      margin-top: 10px;
+    }
+  }
+}
+
+.image-container {
+  @media (max-width: 450px) {
+    display: none;
+  }
+}
