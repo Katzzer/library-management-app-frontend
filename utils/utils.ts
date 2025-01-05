@@ -43,6 +43,9 @@ export const decodeToken = (token: string | null): DecodedToken | null => {
     }
 };
 
-export const getBackendUrl = ():string => {
-    return process.env.API_ENDPOINT || "http://localhost:8080";
+export function getBackendUrl(): string {
+    if (process.env.NODE_ENV === "production") {
+        return "http://library-management-app-backend.pavelkostal.com";
+    }
+    return "http://localhost:8080"; // Local development backend
 }
