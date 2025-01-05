@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import {useDispatch, useSelector} from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { isTokenValid } from "@/utils/utils";
 import { useRouter } from "next/router";
 import { Book } from "@/data/types";
 import Image from "next/image";
-import {clearToken} from "@/store/authSlice";
+import { clearToken } from "@/store/authSlice";
 
 const API_ENDPOINT = process.env.API_ENDPOINT || "http://localhost:8080";
 
@@ -16,6 +16,7 @@ const AllBooks: React.FC = () => {
     const [books, setBooks] = useState<Book[]>([]);
     const [filteredBooks, setFilteredBooks] = useState<Book[]>([]);
     const [searchQuery, setSearchQuery] = useState(""); // State to hold the search query
+    const [showBorrowedOnly, setShowBorrowedOnly] = useState(false); // Toggle state (all books or only borrowed)
     const [isUserAuthenticated, setIsUserAuthenticated] = useState(true);
     const router = useRouter();
 
@@ -55,35 +56,49 @@ const AllBooks: React.FC = () => {
         router.push(`/all-books/${id}`);
     };
 
-    // On search query change, filter books
     useEffect(() => {
-        if (searchQuery.trim() === "") {
-            setFilteredBooks(books); // Show all books if no query
-        } else {
+        let filtered = books;
+
+        if (showBorrowedOnly) {
+            // Filter to show only borrowed books
+            filtered = filtered.filter((book) => book.borrowed);
+        }
+
+        if (searchQuery.trim() !== "") {
             const lowerCaseQuery = searchQuery.toLowerCase();
-            const filtered = books.filter((book) =>
+            filtered = filtered.filter((book) =>
                 book.name.toLowerCase().includes(lowerCaseQuery) ||
                 book.author.toLowerCase().includes(lowerCaseQuery) ||
                 book.description.toLowerCase().includes(lowerCaseQuery)
             );
-            setFilteredBooks(filtered);
         }
-    }, [searchQuery, books]);
+
+        setFilteredBooks(filtered); // Update the filtered list
+    }, [searchQuery, showBorrowedOnly, books]);
+
+    const title = showBorrowedOnly ? "My Borrowed Books" : "All Books";
 
     return (
         <div className="container mt-4">
-            <h1 className="text-center mb-4">List Of Books</h1>
+            <h1 className="text-center mb-4">{title}</h1>
 
-            {/* Search Bar */}
-            <div className="mb-4 d-flex justify-content-center">
+            <div className="mb-4 d-flex justify-content-center align-items-center">
+                {/* Search Bar */}
                 <input
                     type="text"
                     className="form-control"
-                    style={{ maxWidth: "400px" }}
+                    style={{ maxWidth: "400px", marginRight: "10px" }}
                     placeholder="Search by name, author, or description"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)} // Update search query
                 />
+
+                <button
+                    className="btn btn-primary"
+                    onClick={() => setShowBorrowedOnly(!showBorrowedOnly)} // Toggle between borrowed and all
+                >
+                    {showBorrowedOnly ? "Show All Books" : "Show My Borrowed Books"}
+                </button>
             </div>
 
             <table className="table table-striped table-bordered">
@@ -101,7 +116,7 @@ const AllBooks: React.FC = () => {
                     >
                         <td>
                             <div className="d-flex align-items-center">
-                                <div style={{ width: "120px"}}>
+                                <div style={{ width: "120px" }}>
                                     <Image
                                         src={`${API_ENDPOINT}/static/images/${book.image_name}`}
                                         width={100}
