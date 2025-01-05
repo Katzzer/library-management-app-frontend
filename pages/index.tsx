@@ -16,7 +16,7 @@ const Home: React.FC = () => {
     }, [token]);
 
 
-    const buttonText = isAuthenticated ? "Explore Books" : "Login";
+    const buttonText = isAuthenticated ? "Explore Books" : "Sign Up";
     const buttonUrl = isAuthenticated ? "/all-books" : "/signup";
 
     return (

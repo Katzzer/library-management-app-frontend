@@ -25,7 +25,7 @@ const SignUp: React.FC = () => {
         if (isAuthenticated) {
             router.push("/all-books");
         }
-    }, [isAuthenticated]);
+    }, [isAuthenticated, router]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

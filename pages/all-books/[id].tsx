@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useRouter } from "next/router"; // Use Next.js router to get the dynamic route's ID
+import { useRouter } from "next/router";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import { RootState } from "@/store/store";
 import { decodeToken, isTokenValid } from "@/utils/utils";
 import { Book, DecodedToken } from "@/data/types";
 import { BorrowOrReturn } from "@/data/enum";
 import Image from "next/image";
+import {clearToken} from "@/store/authSlice";
 
 const API_ENDPOINT = process.env.API_ENDPOINT || "http://localhost:8080";
 
 const BookDetails: React.FC = () => {
+    const dispatch = useDispatch();
     const router = useRouter();
     const { id } = router.query;
     const token = useSelector((state: RootState) => state.auth.token);
@@ -33,7 +35,6 @@ const BookDetails: React.FC = () => {
             if (token && id) {
                 try {
                     const response = await axios.post("/api/books", { token, id });
-                    console.log(response);
                     setBook(response.data.response.book);
                 } catch (error) {
                     console.error("Error fetching book details:", error);
@@ -54,7 +55,13 @@ const BookDetails: React.FC = () => {
             const response = await axios.post("/api/books", { token, id, action });
             setBook(response.data.response.book);
         } catch (error) {
-            console.error("Error fetching book details:", error);
+            if (axios.isAxiosError(error)) {
+                if (error.response?.status === 401) {
+                    dispatch(clearToken());
+                }
+            } else {
+                console.error("An unknown error occurred:", error);
+            }
         }
     };
 
