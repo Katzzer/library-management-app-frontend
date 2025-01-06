@@ -1,12 +1,23 @@
 .search-title-container {
 
-  @media (max-width: 600px) {
+  @media (max-width: 800px) {
     flex-direction: column;
   }
 
+  input {
+    margin-right: 10px;
+    max-width: 400px;
+    @media (max-width: 800px) {
+      margin-right: 0;
+    }
+  }
+
   button {
-    @media (max-width: 600px) {
+    width: 250px;
+    @media (max-width: 800px) {
       margin-top: 10px;
+      width: 100%;
+      max-width: 400px;
     }
   }
 }

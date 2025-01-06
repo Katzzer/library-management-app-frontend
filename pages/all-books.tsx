@@ -7,7 +7,7 @@ import { useRouter } from "next/router";
 import { Book } from "@/data/types";
 import Image from "next/image";
 import { clearToken } from "@/store/authSlice";
-import "@/styles/book.scss"
+import "@/styles/allBooks.scss"
 
 const AllBooks: React.FC = () => {
     const dispatch = useDispatch();
@@ -77,8 +77,6 @@ const AllBooks: React.FC = () => {
 
     const title = showBorrowedOnly ? "My Borrowed Books" : "All Books";
 
-    console.log(getBackendUrl());
-
     return (
         <div className="container mt-4">
             <h1 className="text-center mb-4">{title}</h1>
@@ -88,7 +86,6 @@ const AllBooks: React.FC = () => {
                 <input
                     type="text"
                     className="form-control"
-                    style={{maxWidth: "400px", marginRight: "10px"}}
                     placeholder="Search by name, author, or description"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
@@ -97,7 +94,6 @@ const AllBooks: React.FC = () => {
                 <button
                     className="btn btn-primary"
                     onClick={() => setShowBorrowedOnly(!showBorrowedOnly)}
-                    style={{width: "250px"}}
                 >
                     {showBorrowedOnly ? "Show All Books" : "Show My Borrowed Books"}
                 </button>

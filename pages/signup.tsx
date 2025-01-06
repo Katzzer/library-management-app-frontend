@@ -37,7 +37,6 @@ const SignUp: React.FC = () => {
 
             if (response.data.response.token) {
                 dispatch(setToken(response.data.response.token));
-                console.log("Token saved to Redux:", response.data.response.token);
             }
         } catch (error) {
             console.error("Error during request:", error);
