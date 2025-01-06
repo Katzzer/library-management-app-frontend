@@ -22,7 +22,8 @@
   }
 }
 
-.image-container {
+.all-books-container .image-container {
+
   @media (max-width: 450px) {
     display: none;
   }

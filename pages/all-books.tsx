@@ -78,7 +78,7 @@ const AllBooks: React.FC = () => {
     const title = showBorrowedOnly ? "My Borrowed Books" : "All Books";
 
     return (
-        <div className="container mt-4">
+        <div className="container all-books-container mt-4">
             <h1 className="text-center mb-4">{title}</h1>
 
             <div className="mb-4 d-flex justify-content-center align-items-center search-title-container">
@@ -99,45 +99,58 @@ const AllBooks: React.FC = () => {
                 </button>
             </div>
 
-
-            <table className="table table-striped table-bordered">
-                <thead className="thead-dark">
-                <tr>
-                    <th>Details</th>
-                </tr>
-                </thead>
-                <tbody>
+            <div>
                 {filteredBooks.map((book) => (
-                    <tr
+                    <div
                         key={book.id}
                         onClick={() => handleViewBook(book.id)}
-                        style={{cursor: "pointer"}}
+                        style={{
+                            cursor: "pointer",
+                            marginTop: "10px",
+                            padding: "15px",
+                            border: "1px solid #ddd",
+                            borderRadius: "5px",
+                            boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
+                            backgroundColor: "white",
+                        }}
                     >
-                        <td>
-                            <div className="d-flex align-items-center">
-                                <div style={{width: "120px"}} className="image-container">
-                                    <Image
-                                        src={`${getBackendUrl()}/static/images/${book.image_name}`}
-                                        width={100}
-                                        height={100}
-                                        alt={book.name}
-                                        style={{ width: "100px", height: "auto", marginRight: "15px" }}
-                                    />
-                                </div>
-
-                                <div>
-                                    <h5>{book.name}</h5>
-                                    <p><strong>Author:</strong> {book.author}</p>
-                                    <p><strong>Description:</strong> {book.description}</p>
-                                    <p><strong>ISBN:</strong> {book.isbn}</p>
-                                    <p><strong>Borrowed:</strong> {book.borrowed ? "Yes" : "No"}</p>
-                                </div>
+                        <div className="d-flex align-items-center">
+                            {/* Book Image */}
+                            <div
+                                style={{
+                                    width: "120px",
+                                    marginRight: "15px",
+                                }}
+                                className="image-container"
+                            >
+                                <Image
+                                    src={`${getBackendUrl()}/static/images/${book.image_name}`}
+                                    width={100} // Aspect ratio base width
+                                    height={150} // Aspect ratio base height
+                                    alt={book.name}
+                                />
                             </div>
-                        </td>
-                    </tr>
+
+                            {/* Book Details */}
+                            <div>
+                                <h5>{book.name}</h5>
+                                <p>
+                                    <strong>Author:</strong> {book.author}
+                                </p>
+                                <p>
+                                    <strong>Description:</strong> {book.description}
+                                </p>
+                                <p>
+                                    <strong>ISBN:</strong> {book.isbn}
+                                </p>
+                                <p>
+                                    <strong>Borrowed:</strong> {book.borrowed ? "Yes" : "No"}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
                 ))}
-                </tbody>
-            </table>
+            </div>
         </div>
     );
 };
