@@ -5,11 +5,16 @@ import axios from "axios";
 import { RootState } from "@/store/store";
 import {isTokenValid} from "@/utils/utils";
 import { useRouter } from "next/router";
+import "@/styles/signup.scss"
+
+const EMAIL_ALREADY_EXISTS = 'Email already exists. Please try again.'
+const INVALID_EMAIL_OR_PASSWORD = 'Invalid email or password.'
 
 const SignUp: React.FC = () => {
     const [email, setEmail] = useState("admin@gmail.com");
     const [password, setPassword] = useState("admin");
     const [showModal, setShowModal] = useState(false);
+    const [responseErrorCode, setResponseErrorCode] = useState<number>();
     const [isSigningUp, setIsSigningUp] = useState(true);
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const router = useRouter();
@@ -33,8 +38,6 @@ const SignUp: React.FC = () => {
         try {
             const response = await axios.post("api/signup", { email, password, isSigningUp });
 
-            console.log("Response from server:", response.data);
-
             if (response.data.response.token) {
                 dispatch(setToken(response.data.response.token));
             }
@@ -43,6 +46,12 @@ const SignUp: React.FC = () => {
 
             if (axios.isAxiosError(error) && error.response?.status === 409) {
                 setShowModal(true);
+                setResponseErrorCode(409);
+            }
+
+            if (axios.isAxiosError(error) && error.response?.status === 401) {
+                setShowModal(true);
+                setResponseErrorCode(401);
             }
         }
     };
@@ -50,7 +59,7 @@ const SignUp: React.FC = () => {
     const toggleSignMode = () => setIsSigningUp((prev) => !prev);
 
     return (
-        <div className="container d-flex justify-content-center align-items-center" style={{ height: "100vh" }}>
+        <div className="container d-flex justify-content-center align-items-center container-sign-up">
             <div className="card p-4 shadow" style={{ width: "100%", maxWidth: "400px" }}>
                 <h1 className="text-center">{isSigningUp ? "Sign Up" : "Login"}</h1>
                 <form onSubmit={handleSubmit} className="mt-4">
@@ -120,7 +129,7 @@ const SignUp: React.FC = () => {
                                 ></button>
                             </div>
                             <div className="modal-body">
-                                <p>Email already exists. Please try again.</p>
+                                <p>{responseErrorCode === 409 ? EMAIL_ALREADY_EXISTS : INVALID_EMAIL_OR_PASSWORD}</p>
                             </div>
                         </div>
                     </div>

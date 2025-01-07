@@ -1,0 +1,13 @@
+.container-sign-up {
+  height: 60vh;
+
+  @media (max-width: 500px) {
+    height: 40vh;
+    margin-top: 40px;
+  }
+
+  @media (max-width: 375px) {
+    height: 40vh;
+    margin-top: 75px;
+  }
+}
