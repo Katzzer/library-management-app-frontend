@@ -1,16 +1,26 @@
-.book-container {
+.detail-book-container {
+  margin-bottom: 10px;
+
   .image-detail-container {
     @media (max-width: 500px) {
       flex-direction: column;
 
       .image-container {
         align-self: center;
-      }
 
+      }
       .book-details {
         margin-top: 20px;
       }
     }
 
+  }
+
+  .image-container {
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
   }
 }

@@ -112,11 +112,7 @@ const SignUp: React.FC = () => {
             {/* Modal for Error Message */}
             {showModal && (
                 <div
-                    className="modal fade show"
-                    style={{
-                        display: "block",
-                        backgroundColor: "rgba(0,0,0,0.5)",
-                    }}
+                    className="modal fade show modal-container"
                 >
                     <div className="modal-dialog modal-dialog-centered">
                         <div className="modal-content">

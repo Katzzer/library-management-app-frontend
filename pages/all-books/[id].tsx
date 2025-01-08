@@ -8,7 +8,7 @@ import { Book, DecodedToken } from "@/data/types";
 import { BorrowOrReturn } from "@/data/enum";
 import Image from "next/image";
 import {clearToken} from "@/store/authSlice";
-import "@/styles/book.scss"
+import "@/styles/bookDetails.scss"
 
 const BookDetails: React.FC = () => {
     const dispatch = useDispatch();
@@ -73,9 +73,10 @@ const BookDetails: React.FC = () => {
     const showBorrowReturnButton = !book.borrowed || idCurrentUserBorrowedBook;
 
     return (
-        <div className="container book-container mt-5">
-            <h1 className="text-center mb-4">{book.name}</h1>
-            <div className="card mx-auto p-4" style={{ maxWidth: "800px" }}>
+        <div className="container detail-book-container mt-5">
+
+            <div className="card mx-auto p-4" style={{maxWidth: "800px"}}>
+                <h1 className="text-center mb-4">{book.name}</h1>
                 <div className="d-flex align-items-start image-detail-container">
                     {/* Image on the left */}
                     <div className="me-4 image-container">
@@ -84,7 +85,6 @@ const BookDetails: React.FC = () => {
                             width={200}
                             height={300}
                             alt={book.name}
-                            style={{ maxWidth: "100%", height: "auto" }}
                         />
                     </div>
 

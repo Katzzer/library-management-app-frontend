@@ -5,6 +5,7 @@ import { clearToken } from "@/store/authSlice"; // Import clearToken action
 import "@/styles/header.scss";
 import {isTokenValid} from "@/utils/utils";
 import {RootState} from "@/store/store";
+import {router} from "next/client";
 
 const Header = () => {
     const token = useSelector((state: RootState) => state.auth.token);
@@ -18,6 +19,7 @@ const Header = () => {
 
     const handleLogout = () => {
         dispatch(clearToken());
+        router.push("/");
     };
 
     return (

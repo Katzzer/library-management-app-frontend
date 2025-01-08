@@ -104,23 +104,11 @@ const AllBooks: React.FC = () => {
                     <div
                         key={book.id}
                         onClick={() => handleViewBook(book.id)}
-                        style={{
-                            cursor: "pointer",
-                            marginTop: "10px",
-                            padding: "15px",
-                            border: "1px solid #ddd",
-                            borderRadius: "5px",
-                            boxShadow: "0 2px 5px rgba(0, 0, 0, 0.1)",
-                            backgroundColor: "white",
-                        }}
+                        className={"book-container"}
                     >
                         <div className="d-flex align-items-center">
                             {/* Book Image */}
                             <div
-                                style={{
-                                    width: "120px",
-                                    marginRight: "15px",
-                                }}
                                 className="image-container"
                             >
                                 <Image
