@@ -21,3 +21,12 @@ export type Book = {
   last_borrowed_at: string;
   name: string;
 }
+
+export type BackendStatus = {
+  response: {
+    status: string;
+    timestamp: string;
+    start_time: string;
+    uptime: string;
+  };
+};

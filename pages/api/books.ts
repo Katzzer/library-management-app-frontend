@@ -1,6 +1,6 @@
 import {NextApiRequest, NextApiResponse} from "next";
 import axios from "axios";
-import {getBackendUrl} from "@/utils/utils";
+import {getBackendUrl, handleError, handleInvalidMethod} from "@/utils/utils";
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
 
@@ -52,29 +52,4 @@ async function getBooks(token: string, id?: string, action?: string) {
             'Authorization': token
         },
     });
-}
-
-function handleInvalidMethod(req: NextApiRequest, res: NextApiResponse) {
-    res.setHeader('Allow', ['POST']);
-    res.status(405).json({ error: `Method ${req.method} Not Allowed` });
-}
-
-function handleError(res: NextApiResponse, error: unknown) {
-    if (axios.isAxiosError(error)) {
-        console.error('Axios error:', error.message);
-
-        const status = error.response?.status || 500;
-        const details = error.response?.data || 'No additional details';
-
-        res.status(status).json({
-            error: 'Failed to send data',
-            details,
-        });
-    } else {
-        console.error('Unexpected error:', error);
-        res.status(500).json({
-            error: 'Failed to send data',
-            details: 'An unexpected error occurred',
-        });
-    }
 }

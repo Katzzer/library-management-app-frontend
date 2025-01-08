@@ -6,6 +6,8 @@ import { RootState } from "@/store/store";
 import { isTokenValid } from "@/utils/utils";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "@/styles/index.scss"
+import axios from "axios";
+import {BackendStatus} from "@/data/types";
 
 const Home: React.FC = () => {
     const token = useSelector((state: RootState) => state.auth.token);
@@ -14,6 +16,19 @@ const Home: React.FC = () => {
     useEffect(() => {
             setIsAuthenticated(isTokenValid(token));
     }, [token]);
+
+    useEffect(() => {
+        const fetchStatus = async () => {
+            try {
+                const response = await axios.get<BackendStatus>("/api/backend-health-check"); // just to wake up backend that runs on Heroku
+                console.log({"backend-health-check": response.data.response});
+            } catch (error) {
+                console.error("Error fetching backend status:", error);
+            }
+        };
+
+        fetchStatus();
+    }, []);
 
 
     const buttonText = isAuthenticated ? "Explore Books" : "Sign Up";
